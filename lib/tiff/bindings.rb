@@ -29,7 +29,7 @@ module Tiff
 
     tags[:width]  = Tag.new(:width, 256, :uint)
     tags[:height] = Tag.new(:height, 257, :uint)
-    tags[:bits_per_channel] = Tag.new(:bits_per_channel, 258, :ushort)
+    tags[:bits_per_sample] = Tag.new(:bits_per_sample, 258, :ushort)
 
     tags[:compression] = Tag.new(:compression, 259, :ushort,
       CCITTFAX3: 3,

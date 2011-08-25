@@ -53,8 +53,8 @@ describe Tiff::Bindings do
         end
       end
 
-      context ":bits_per_channel" do
-        subject { bindings.tags[:bits_per_channel] }
+      context ":bits_per_sample" do
+        subject { bindings.tags[:bits_per_sample] }
 
         it "should have id 258" do
           subject.id.should eq 258
