@@ -60,6 +60,51 @@ describe Tiff::Image do
 
   end
 
+  describe "#set_field" do
+    context "when field is not supported" do
+
+      it "raises an error" do
+        lambda do
+          image.set_field(:unsupported, 100)
+        end.should raise_exception(ArgumentError)
+      end
+
+    end
+
+    context ":width" do
+      let(:width) { 277 }
+
+      it "sets the image's width" do
+        Tiff::Bindings.should_receive(:set_field).with(
+          image.fd, 256, :uint, width
+        )
+        image.set_field :width, width
+      end
+    end
+
+    context ":height" do
+      let(:height) { 42 }
+
+      it "sets the image's height" do
+        Tiff::Bindings.should_receive(:set_field).with(
+          image.fd, 257, :uint, height
+        )
+        image.set_field :height, height
+      end
+    end
+
+    context ":bits_per_sample" do
+
+      it "sets the image's bits per sample" do
+        Tiff::Bindings.should_receive(:set_field).with(
+          image.fd, 258, :ushort, 1
+        )
+        image.set_field :bits_per_sample, 1
+      end
+
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do
