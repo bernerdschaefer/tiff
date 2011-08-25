@@ -54,6 +54,11 @@ module Tiff
       set_field :compression, compresion
     end
 
+    # Sets the image's photometric
+    def photometric=(compresion)
+      set_field :photometric, compresion
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded

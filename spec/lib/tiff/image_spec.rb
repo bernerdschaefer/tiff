@@ -133,6 +133,13 @@ describe Tiff::Image do
     end
   end
 
+  describe "#photometric=" do
+    it "sets the photometric field" do
+      image.should_receive(:set_field).with(:photometric, :min_is_black)
+      image.photometric = :min_is_black
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do
