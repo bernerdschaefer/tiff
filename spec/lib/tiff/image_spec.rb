@@ -119,6 +119,13 @@ describe Tiff::Image do
     end
   end
 
+  describe "#bits_per_sample=" do
+    it "sets the bits_per_sample field" do
+      image.should_receive(:set_field).with(:bits_per_sample, 1)
+      image.bits_per_sample = 1
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do

@@ -44,6 +44,11 @@ module Tiff
       set_field :height, height
     end
 
+    # Sets the image's bits_per_sample
+    def bits_per_sample=(bits_per_sample)
+      set_field :bits_per_sample, bits_per_sample
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded
