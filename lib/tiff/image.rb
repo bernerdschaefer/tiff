@@ -27,6 +27,8 @@ module Tiff
       Bindings::write_raw_strip fd, 0, data, data.length
     end
 
+    # Sets a field on the image, using the list of tags in
+    # `Tiff::Bindings.tags`
     def set_field(name, value)
       tag = Bindings::tags[name]
       Bindings::set_field fd, tag.id, tag.type, tag.serialize(value)
