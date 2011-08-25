@@ -66,7 +66,7 @@ describe Tiff::Image do
       it "raises an error" do
         lambda do
           image.set_field(:unsupported, 100)
-        end.should raise_exception(ArgumentError)
+        end.should raise_exception
       end
 
     end

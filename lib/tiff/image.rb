@@ -28,26 +28,8 @@ module Tiff
     end
 
     def set_field(name, value)
-
-      case name
-
-        when :width
-          # 256 is the magic number for TIFFTAG_IMAGEWIDTH
-          Bindings::set_field fd, 256, :uint, value
-
-        when :height
-          # 257 is the magic number for TIFFTAG_IMAGELENGTH
-          Bindings::set_field fd, 257, :uint, value
-
-        when :bits_per_sample
-          # 258 is the magic number for TIFFTAG_BITSPERSAMPLE
-          Bindings::set_field fd, 258, :ushort, value
-
-        else
-          raise ArgumentError, "Field #{name.inspect} is not supported"
-
-      end
-
+      tag = Bindings::tags[name]
+      Bindings::set_field fd, tag.id, tag.type, tag.serialize(value)
     end
 
     class << self
