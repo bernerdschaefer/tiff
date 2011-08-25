@@ -34,6 +34,11 @@ module Tiff
       Bindings::set_field fd, tag.id, tag.type, tag.serialize(value)
     end
 
+    # Sets the image's width
+    def width=(width)
+      set_field :width, width
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded

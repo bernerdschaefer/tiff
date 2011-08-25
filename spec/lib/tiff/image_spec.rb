@@ -105,6 +105,13 @@ describe Tiff::Image do
     end
   end
 
+  describe "#width=" do
+    it "sets the width field" do
+      image.should_receive(:set_field).with(:width, 100)
+      image.width = 100
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do
