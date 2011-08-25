@@ -22,6 +22,24 @@ module Tiff
       Bindings::close fd
     end
 
+    class << self
+
+      # Initializes a new image. If a block is provided, the image is yielded
+      # and automatically closed.
+      def open(path, mode)
+        new(path, mode).tap do |image|
+          if block_given?
+            begin
+              yield image
+            ensure
+              image.close
+            end
+          end
+        end
+      end
+
+    end
+
   end
 
 end

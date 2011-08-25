@@ -46,4 +46,52 @@ describe Tiff::Image do
 
   end
 
+  describe ".open" do
+
+    it "initializes a new image" do
+      Tiff::Image.should_receive(:new).with(file.path, "w")
+      Tiff::Image.open file.path, "w"
+    end
+
+    it "returns the new image" do
+      image = stub
+      Tiff::Image.stub(:new => image)
+      Tiff::Image.open(file.path, "w").should eq image
+    end
+
+    context "when passed a block" do
+
+      it "yields the block" do
+        called = false
+        Tiff::Image.open(file.path, "w") do |image|
+          called = true
+        end
+        called.should be_true
+      end
+
+      it "closes the image" do
+        image = stub
+        image.should_receive(:close)
+        Tiff::Image.stub(:new => image)
+        Tiff::Image.open(file.path, "w") do |image|
+        end
+      end
+
+      context "when an error occurs in the block" do
+        it "still closes the image" do
+          image = stub
+          image.should_receive(:close)
+          Tiff::Image.stub(:new => image)
+          lambda do
+            Tiff::Image.open(file.path, "w") do |image|
+              raise
+            end
+          end.should raise_exception
+        end
+      end
+
+    end
+
+  end
+
 end
