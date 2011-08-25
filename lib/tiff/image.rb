@@ -22,6 +22,11 @@ module Tiff
       Bindings::close fd
     end
 
+    # Writes raw data to the image.
+    def data=(data)
+      Bindings::write_raw_strip fd, 0, data, data.length
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded

@@ -46,6 +46,20 @@ describe Tiff::Image do
 
   end
 
+  describe "#data=" do
+
+    it "writes the raw data" do
+      data = "\x01\x00"
+
+      Tiff::Bindings.should_receive(:write_raw_strip).with(
+        image.fd, 0, data, data.length
+      )
+
+      image.data = data
+    end
+
+  end
+
   describe ".open" do
 
     it "initializes a new image" do
