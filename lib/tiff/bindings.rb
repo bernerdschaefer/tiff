@@ -25,10 +25,17 @@ module Tiff
     end
 
     class << self
+
+      # Returns a hash of tag names to Tag instances. See `lib/tiff/tags.rb`
+      # for a list of supported tags.
       def tags
         @@tags
       end
+
     end
+
+    # Initializes the tags hash with the default set of supported tags. See
+    # `man libtiff` and `man TIFFGetField` for details.
 
     tags[:artist] = Tag.new(:artist, 315, :string)
     tags[:bad_fax_lines] = Tag.new(:bad_fax_lines, 326, :uint)
