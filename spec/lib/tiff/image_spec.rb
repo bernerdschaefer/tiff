@@ -126,6 +126,13 @@ describe Tiff::Image do
     end
   end
 
+  describe "#compression=" do
+    it "sets the compression field" do
+      image.should_receive(:set_field).with(:compression, :CCITTFAX3)
+      image.compression = :CCITTFAX3
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do

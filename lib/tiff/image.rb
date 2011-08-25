@@ -49,6 +49,11 @@ module Tiff
       set_field :bits_per_sample, bits_per_sample
     end
 
+    # Sets the image's compression
+    def compression=(compresion)
+      set_field :compression, compresion
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded
