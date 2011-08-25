@@ -39,6 +39,11 @@ module Tiff
       set_field :width, width
     end
 
+    # Sets the image's height
+    def height=(height)
+      set_field :height, height
+    end
+
     class << self
 
       # Initializes a new image. If a block is provided, the image is yielded

@@ -112,6 +112,13 @@ describe Tiff::Image do
     end
   end
 
+  describe "#height=" do
+    it "sets the height field" do
+      image.should_receive(:set_field).with(:height, 100)
+      image.height = 100
+    end
+  end
+
   describe ".open" do
 
     it "initializes a new image" do
