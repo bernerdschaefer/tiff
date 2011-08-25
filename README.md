@@ -28,26 +28,3 @@ Usage
     image = Tiff::Image.open "filename.tif", "r"
     image.get_field :width  # => 200
     image.get_field :height # => 40
-
-Extending
-=========
-
-As I mentioned, only a small subset of TIFF features are currently implemented.
-It should, however, be pretty easy to add new support -- especially if you need
-additional tag support.
-
-You can add support for new tags from within your own application like this:
-
-    # Add support for TIFFTAG_DOCUMENTNAME
-    Tiff::Bindings.tags[:document_name] = Tiff::Tag.new(
-      :document_name, 269, :string
-    )
-
-    # Add support for TIFFTAG_THRESHHOLDING
-    Tiff::Bindings.tags[:threshholding] = Tiff::Tag.new(
-      :threshholding, 263, :ushort, {
-        :bilevel => 1,
-        :halftone => 2,
-        :error_diffuse => 3
-      }
-    )

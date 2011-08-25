@@ -55,9 +55,16 @@ module Tiff
     # If a map was provided for the tag, it will return the ruby value if it
     # exists. If the mapping isn't found, it will return the raw value.
     def deserialize(pointer)
-      value = pointer.send :"read_#{type}"
-      value = map.invert[value] if map && map.has_value?(value)
-      value
+      case type
+        when :string
+          string = pointer.read_pointer()
+          return string.null? ? nil : string.read_string()
+
+        else
+          value = pointer.send :"read_#{type}"
+          value = map.invert[value] if map && map.has_value?(value)
+          value
+      end
     end
 
   end

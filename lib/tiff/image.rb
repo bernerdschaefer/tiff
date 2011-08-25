@@ -35,8 +35,12 @@ module Tiff
     def get_field(name)
       tag = Bindings::tags[name]
       pointer = FFI::MemoryPointer.new tag.type
-      Bindings::get_field fd, tag.id, :pointer, pointer
-      tag.deserialize pointer
+      result = Bindings::get_field fd, tag.id, :pointer, pointer
+      if result == 1
+        tag.deserialize pointer
+      else
+        nil
+      end
     end
 
     # Sets the image's width
