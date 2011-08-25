@@ -50,5 +50,15 @@ module Tiff
       end
     end
 
+    # Returns the deserialized value from the provided FFI::MemoryPointer.
+    #
+    # If a map was provided for the tag, it will return the ruby value if it
+    # exists. If the mapping isn't found, it will return the raw value.
+    def deserialize(pointer)
+      value = pointer.send :"read_#{type}"
+      value = map.invert[value] if map && map.has_value?(value)
+      value
+    end
+
   end
 end

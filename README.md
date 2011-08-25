@@ -1,10 +1,10 @@
 Tiff
 ====
 
-This is a simple wrapper around libtiff using FFI. Presently, I only need to be
-able to generate a TIFF image from raw data, so that's all of the API that's
-been implemented. If you're interested in adding features, you can always send
-me a pull request (please include specs!).
+This is a simple wrapper around libtiff using FFI. It only implements a small
+subset of libffi's features -- just enough to generate a TIFF image and read
+back some of its data. If you're interested in adding features, you can always
+send me a pull request (please include specs!).
 
 Usage
 =====
@@ -24,6 +24,10 @@ Usage
       tiff.data = raw_data
 
     end
+
+    image = Tiff::Image.open "filename.tif", "r"
+    image.get_field :width  # => 200
+    image.get_field :height # => 40
 
 Extending
 =========

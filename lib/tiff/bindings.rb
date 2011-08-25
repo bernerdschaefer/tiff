@@ -14,6 +14,9 @@ module Tiff
     attach_function :set_field, :TIFFSetField,
       [:pointer, :uint, :varargs], :int
 
+    attach_function :get_field, :TIFFGetField,
+      [:pointer, :uint, :varargs], :int
+
     attach_function :write_raw_strip, :TIFFWriteRawStrip,
       [:pointer, :uint, :pointer, :int], :int
 

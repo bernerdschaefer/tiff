@@ -8,10 +8,6 @@ module Tiff
     attr_reader :fd
 
     def initialize(path, mode)
-      unless mode == "w"
-        raise ArgumentError, "Tiff::Image only supports `w` mode"
-      end
-
       @path = path
       @mode = mode
 
@@ -32,6 +28,15 @@ module Tiff
     def set_field(name, value)
       tag = Bindings::tags[name]
       Bindings::set_field fd, tag.id, tag.type, tag.serialize(value)
+    end
+
+    # Gets a field from the image, using the list of tags in #
+    # `Tiff::Bindings.tags`
+    def get_field(name)
+      tag = Bindings::tags[name]
+      pointer = FFI::MemoryPointer.new tag.type
+      Bindings::get_field fd, tag.id, :pointer, pointer
+      tag.deserialize pointer
     end
 
     # Sets the image's width

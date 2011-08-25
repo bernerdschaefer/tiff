@@ -65,4 +65,46 @@ describe Tiff::Tag do
 
   end
 
+  describe "#deserialize" do
+    let(:pointer) do
+      FFI::MemoryPointer.new(:uint).tap do |pointer|
+        pointer.write_uint 1
+      end
+    end
+
+    context "when no map is provided" do
+      let(:tag) do
+        Tiff::Tag.new(:tag, 123, :uint)
+      end
+
+      it "returns the value" do
+        tag.deserialize(pointer).should eq 1
+      end
+    end
+
+    context "when a map is provided" do
+      let(:tag) do
+        Tiff::Tag.new(:tag, 123, :uint, a: 1)
+      end
+
+      context "and the value is mapped" do
+        it "returns the mapped value" do
+          tag.deserialize(pointer).should eq :a
+        end
+      end
+
+      context "and the value is not mapped" do
+        it "raises a KeyError" do
+          lambda { tag.serialize(:b) }.should raise_exception(KeyError)
+        end
+
+        it "informs the user of the available options" do
+          lambda { tag.serialize(:b) }.should raise_exception(/:a/)
+        end
+      end
+
+    end
+
+  end
+
 end
