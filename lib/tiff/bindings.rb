@@ -5,7 +5,9 @@ module Tiff
 
     ffi_lib 'libtiff'
 
-    attach_function :open, :TIFFOpen,
+    # This function will be wrapped by `Tiff::Bindings.open` to protect from
+    # SEGFAULTs.
+    attach_function :_open, :TIFFOpen,
       [:string, :string], :pointer
 
     attach_function :close, :TIFFClose,
@@ -20,11 +22,30 @@ module Tiff
     attach_function :write_raw_strip, :TIFFWriteRawStrip,
       [:pointer, :uint, :pointer, :int], :int
 
-    @@tags = Hash.new do |hash, key|
-      raise KeyError, "Tag #{key.inspect} is unsupported. Available tags: #{hash.keys}"
-    end
-
     class << self
+
+      # Wrapper function for the C function `TIFFOpen`. It returns a
+      # FFI::MemoryPointer.
+      #
+      # If the file cannot be read or written to, it raises `Errno::ENOENT`
+      # just like `File.open`.
+      #
+      # If the file cannot be read by libtiff, it raises an `ArgumentError`
+      # explaining that the file is invalid.
+      def open(path, mode)
+        # Try to open the path with the given mode. This ensures we raise ruby
+        # exceptions for unreadable/writable files, instead of relying on
+        # `libtiff` to raise the exceptions.
+        File.open(path, mode) {}
+
+         _open(path, mode).tap do |descriptor|
+           # If the pointer returned by open is null, then the image could not
+           # be opened.
+           if descriptor.null?
+             raise ArgumentError, "`#{path}` is not a valid TIFF image"
+           end
+         end
+      end
 
       # Returns a hash of tag names to Tag instances. See `lib/tiff/tags.rb`
       # for a list of supported tags.
@@ -36,6 +57,10 @@ module Tiff
 
     # Initializes the tags hash with the default set of supported tags. See
     # `man libtiff` and `man TIFFGetField` for details.
+
+    @@tags = Hash.new do |hash, key|
+      raise KeyError, "Tag #{key.inspect} is unsupported. Available tags: #{hash.keys}"
+    end
 
     tags[:artist] = Tag.new(:artist, 315, :string)
     tags[:bad_fax_lines] = Tag.new(:bad_fax_lines, 326, :uint)

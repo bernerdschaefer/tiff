@@ -2,6 +2,39 @@ require "spec_helper"
 
 describe Tiff::Bindings do
 
+  describe ".open" do
+    let(:file) { Tempfile.new("tiff") }
+
+    context "writing" do
+      context "when path is unwritable" do
+        it "raises an exception" do
+          lambda { Tiff::Bindings.open "/bogus/file/path", "w" }.should \
+            raise_exception(Errno::ENOENT)
+        end
+      end
+    end
+
+    context "reading" do
+      context "when the file does not exist" do
+        it "raises an exception" do
+          lambda { Tiff::Bindings.open "non-existant file", "r" }.should \
+            raise_exception(Errno::ENOENT)
+        end
+      end
+
+      context "when the file is unreadable" do
+        it "raises an exception" do
+          Tiff::Image.open file.path, "w" do |tiff|
+            tiff.width = 100
+          end
+
+          lambda { Tiff::Bindings.open file.path, "r" }.should raise_exception
+        end
+      end
+    end
+
+  end
+
   context "class methods" do
     let(:bindings) { Tiff::Bindings }
     subject { bindings }
