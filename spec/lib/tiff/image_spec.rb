@@ -137,6 +137,34 @@ describe Tiff::Image do
 
   end
 
+  describe "#set_field!" do
+    context "when given a valid name" do
+      it "looks up the id and sets the field" do
+        Tiff::Bindings::should_receive(:set_field).with(
+          image.fd, 256, :uint, 1
+        )
+        image.set_field! :width, :uint, 1
+      end
+    end
+
+    context "when given an invalid name" do
+      it "raises an error" do
+        lambda do
+          image.set_field!(:unsupported, :uint, 100)
+        end.should raise_exception
+      end
+    end
+
+    context "when given an id" do
+      it "sets the field" do
+        Tiff::Bindings::should_receive(:set_field).with(
+          image.fd, 256, :uint, 1
+        )
+        image.set_field! 256, :uint, 1
+      end
+    end
+  end
+
   context "reading" do
     let(:image) { Tiff::Image.new "spec/support/sample.tif", "r" }
 

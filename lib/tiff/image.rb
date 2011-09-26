@@ -30,6 +30,29 @@ module Tiff
       Bindings::set_field fd, tag.id, tag.type, tag.serialize(value)
     end
 
+    # Sets a field on the image, delegating directly to the libtiff field
+    # setter.
+    #
+    #   name_or_id: the name of the field, or it's id
+    #     - When a symbol is passed, it will be looked up in the list of tags
+    #     in `Tiff::Bindings.tags`
+    #   *args: an array of type signifiers and values to pass to the FFI
+    #   method.
+    #
+    # Example:
+    #
+    #   image.set_field! :width, :uint, 1
+    #   image.set_field! 285, :string, "Page 1"
+    def set_field!(name_or_id, *args)
+      case name_or_id
+      when Symbol
+        tag = Bindings::tags[name_or_id]
+        Bindings::set_field fd, tag.id, *args
+      when Integer
+        Bindings::set_field fd, name_or_id, *args
+      end
+    end
+
     # Gets a field from the image, using the list of tags in #
     # `Tiff::Bindings.tags`
     def get_field(name)
