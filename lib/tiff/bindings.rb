@@ -66,7 +66,12 @@ module Tiff
     tags[:bad_fax_lines] = Tag.new(:bad_fax_lines, 326, :uint)
     tags[:bits_per_sample] = Tag.new(:bits_per_sample, 258, :ushort)
     tags[:clean_fax_data] = Tag.new(:clean_fax_data, 327, :ushort)
-    tags[:compression] = Tag.new(:compression, 259, :ushort, CCITTFAX3: 3, CCITTFAX4: 4)
+    tags[:compression] = Tag.new(:compression, 259, :ushort,
+                                  none: 1,
+                                  CCITTFAX3: 3,
+                                  CCITTFAX4: 4,
+                                  JPEG: 7
+                                )
     tags[:consecutive_bad_fax_lines] = Tag.new(:consecutive_bad_fax_lines, 328, :uint)
     tags[:copyright] = Tag.new(:copyright, 33432, :string)
     tags[:data_type] = Tag.new(:data_type, 32996, :ushort)
@@ -88,7 +93,14 @@ module Tiff
     tags[:model] = Tag.new(:model, 272, :string)
     tags[:orientation] = Tag.new(:orientation, 274, :ushort)
     tags[:page_name] = Tag.new(:page_name, 285, :string)
-    tags[:photometric] = Tag.new(:photometric, 262, :ushort, min_is_white: 0, min_is_black: 1)
+    tags[:planar_config] = Tag.new(:page_name, 284, :ushort)
+    tags[:photometric] = Tag.new(:photometric, 262, :ushort,
+                                 min_is_white: 0,
+                                 min_is_black: 1,
+                                 rgb: 2,
+                                 palette: 3,
+                                 separated: 5
+                                )
     tags[:predictor] = Tag.new(:predictor, 317, :ushort)
     tags[:resolution_unit] = Tag.new(:resolution_unit, 296, :ushort, none: 1, inch: 2, centimeter: 3)
     tags[:rows_per_strip] = Tag.new(:rows_per_strip, 278, :uint)
