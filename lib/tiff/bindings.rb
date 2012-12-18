@@ -118,7 +118,7 @@ module Tiff
     tags[:x_position] = Tag.new(:x_position, 286, :float)
     tags[:x_resolution] = Tag.new(:x_resolution, 282, :float)
     tags[:y_cb_cr_positioning] = Tag.new(:y_cb_cr_positioning, 531, :ushort)
-    tags[:y_position] = Tag.new(:y_position, 286, :float)
+    tags[:y_position] = Tag.new(:y_position, 287, :float)
     tags[:y_resolution] = Tag.new(:y_resolution, 283, :float)
 
     # Array types are not yet supported.
