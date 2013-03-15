@@ -70,6 +70,7 @@ module Tiff
                                   none: 1,
                                   CCITTFAX3: 3,
                                   CCITTFAX4: 4,
+                                  LZW: 5,
                                   JPEG: 7
                                 )
     tags[:consecutive_bad_fax_lines] = Tag.new(:consecutive_bad_fax_lines, 328, :uint)
