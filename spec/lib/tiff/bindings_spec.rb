@@ -117,6 +117,10 @@ describe Tiff::Bindings do
         it "should map :CCITTFAX4 to 4" do
           subject.map[:CCITTFAX4].should eq 4
         end
+
+        it "should map :LZW to 5" do
+          subject.map[:LZW].should eq 5
+        end
       end
 
       context ":photometric" do
