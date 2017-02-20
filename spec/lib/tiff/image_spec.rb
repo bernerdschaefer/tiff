@@ -189,7 +189,7 @@ describe Tiff::Image do
     end
 
     it "returns the new image" do
-      image = stub
+      image = stub('image')
       Tiff::Image.stub(:new => image)
       Tiff::Image.open(file.path, "w").should eq image
     end
@@ -201,11 +201,11 @@ describe Tiff::Image do
         Tiff::Image.open(file.path, "w") do |image|
           called = true
         end
-        called.should be_true
+        called.should be true
       end
 
       it "closes the image" do
-        image = stub
+        image = stub('image')
         image.should_receive(:close)
         Tiff::Image.stub(:new => image)
         Tiff::Image.open(file.path, "w") do |image|
@@ -214,7 +214,7 @@ describe Tiff::Image do
 
       context "when an error occurs in the block" do
         it "still closes the image" do
-          image = stub
+          image = stub('image')
           image.should_receive(:close)
           Tiff::Image.stub(:new => image)
           lambda do
