@@ -28,3 +28,4 @@ Usage
     image = Tiff::Image.open "filename.tif", "r"
     image.get_field :width  # => 200
     image.get_field :height # => 40
+    image.pixels  # => [4278190335, 4278255360, 4294901760, …] (array of 32-bit integers representing ABGR pixels)
