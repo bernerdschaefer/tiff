@@ -22,6 +22,16 @@ module Tiff
     attach_function :write_raw_strip, :TIFFWriteRawStrip,
       [:pointer, :uint, :pointer, :int], :int
 
+    attach_function :read_rgba, :TIFFReadRGBAImageOriented,
+      [:pointer, :uint32, :uint32, :buffer_out, :int, :int], :int
+
+    # Auxiliary functions for crossplatform memory management
+    attach_function :tiff_malloc, :_TIFFmalloc,
+      [:size_t], :pointer
+
+    attach_function :tiff_free, :_TIFFfree,
+      [:pointer], :void
+
     class << self
 
       # Wrapper function for the C function `TIFFOpen`. It returns a

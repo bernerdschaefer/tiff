@@ -55,4 +55,10 @@ describe Tiff::Image do
     it { should eq "testing123" }
   end
 
+  describe "pixels" do
+    let(:pixels_file) { Tiff::Image.new("spec/support/pixels.tiff", "rb") }
+    subject { pixels_file.pixels }
+    it { should eq [0xFF0000FF, 0xFF00FF00, 0xFFFF0000, 0x00000000] }
+  end
+
 end

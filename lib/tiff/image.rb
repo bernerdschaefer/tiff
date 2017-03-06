@@ -18,6 +18,21 @@ module Tiff
       Bindings::close fd
     end
 
+    # Reads pixels of current image
+    # @return [Array<Integer>] Array of 32-bit ABGR pixels
+    def pixels
+      width  = get_field(:width)
+      height = get_field(:height)
+      raster_bytesize = width * height * FFI::Type::UINT32.size
+      raster = FFI::AutoPointer.new(
+        Bindings.tiff_malloc(raster_bytesize),
+        Bindings.method(:tiff_free),
+      )
+      # See http://www.libtiff.org/man/TIFFReadRGBAImage.3t.html for docs
+      Bindings.read_rgba(@fd, width, height, raster, get_field(:orientation), 0)
+      raster.read_array_of_uint32(width * height)
+    end
+
     # Writes raw data to the image.
     def data=(data)
       Bindings::write_raw_strip fd, 0, data, data.length
